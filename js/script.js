@@ -21,10 +21,17 @@ function UI_DataHList(data, dataGroups, api) {
 					hListContainer.append("<div class='group-"+item_1+"'><span class='ui-section-title'>"+item_1+"</span></div>");
 
 					if(item_1==="schools"){
-						new UI_HList([item["emis"]], {
+						$.ajax({
+						url: api+"index.php?emis="+item["emis"]+"&group=schools",
+						success: function(list){
+							console.log(hListContainer);
+							new UI_HList([item["emis"]], {
 								api: api,
 								suffix: "html"
 						}).appendTo(hListContainer.find(".group-"+item_1));
+						}
+						});
+						
 						return;
 					}
 
