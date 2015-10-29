@@ -9,7 +9,31 @@ function UI_DataHList(data, dataGroups, api) {
 
 	function _draw(data){
 		data.forEach(function(item, index) {
-			var datapointRow = $('<div class="datapoint"></div>');
+			var datapointRow = $('<div class="datapoint"></div>').click(function(e){
+				context = $(this);
+				context.toggleClass("active");
+				if($(this).hasClass("buildings-downloaded")){
+					return;
+				}
+				dataGroups.forEach(function(item_1, index_1){
+					context.addClass("passive");
+					$.ajax({
+						url: api+"index.php?emis="+item["emis"]+"&group="+item_1.replace("-","_"),
+						success: function(list){
+							console.log(hListContainer);
+							list = list.split(",");
+							new UI_HList(list, {
+								api: api,
+								suffix: "html"
+							}).appendTo(hListContainer.find(".group-"+item_1));
+							context.addClass(item_1+"-downloaded");
+							context.removeClass("passive");
+						}
+					});
+					hListContainer.append("<div class='group-"+item_1+"'><h4>"+item_1+"</h4></div>");
+				});
+				
+			});
 			datapointRow.append($('<span></span>').attr({
 					"class": "emis"
 			}).text(item["emis"]));
@@ -20,10 +44,12 @@ function UI_DataHList(data, dataGroups, api) {
 					"class": "surveyor-id"
 				}).text(item["surveyor-id"]));
 
-			var triggerContainer = $("<div class='ui-trigger-container'/>").appendTo(datapointRow);
+			var triggerContainer = $("<span class='ui-trigger-container'/>").appendTo(datapointRow);
 			var hListContainer = $("<div class='ui-hlist-container'/>").appendTo(datapointRow);
+
+
 			
-			dataGroups.forEach(function(item_1, index_1) {
+			/*dataGroups.forEach(function(item_1, index_1) {
 				triggerContainer.append($('<a></a>').attr({
 					"class": item_1 + " icon"
 				}).click(function(e){
@@ -43,7 +69,7 @@ function UI_DataHList(data, dataGroups, api) {
 					
 				}));
 				hListContainer.append("<div class='group-"+item_1+"'><h4>"+item_1+"</h4></div>");
-			});
+			});*/
 			container.append(datapointRow);
 		});
 	}

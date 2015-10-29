@@ -23,13 +23,33 @@ a.icon:hover{
 	opacity: 0.4;
 }
 
-.schools-downloaded a.schools{
+/*.schools-downloaded{
 	pointer-events: none;
 }
-.buildings-downloaded a.buildings{
+.buildings-downloaded{
 	pointer-events: none;
 }
-.building-elements-downloaded a.building-elements{
+.building-elements-downloaded{
+	pointer-events: none;
+}*/
+
+.ui-hlist-container{
+	display: none;
+}
+
+.active .ui-hlist-container{
+	display: block;
+}
+
+.ui-trigger-container:after{
+	content: "+";
+}
+
+.active .ui-trigger-container:after{
+	content: "-";
+}
+
+.passive{
 	pointer-events: none;
 }
 
