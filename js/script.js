@@ -17,6 +17,16 @@ function UI_DataHList(data, dataGroups, api) {
 				}
 				dataGroups.forEach(function(item_1, index_1){
 					context.addClass("passive");
+
+					hListContainer.append("<div class='group-"+item_1+"'><span class='ui-section-title'>"+item_1+"</span></div>");
+
+					if(item_1==="schools"){
+						new UI_HList([item["emis"]], {
+								api: api,
+								suffix: "html"
+						}).appendTo(hListContainer.find(".group-"+item_1));
+					}
+
 					$.ajax({
 						url: api+"index.php?emis="+item["emis"]+"&group="+item_1.replace("-","_"),
 						success: function(list){
@@ -30,7 +40,6 @@ function UI_DataHList(data, dataGroups, api) {
 							context.removeClass("passive");
 						}
 					});
-					hListContainer.append("<div class='group-"+item_1+"'><h4>"+item_1+"</h4></div>");
 				});
 				
 			});

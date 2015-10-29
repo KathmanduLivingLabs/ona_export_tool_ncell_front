@@ -1,3 +1,9 @@
+body{
+	padding: 0px;
+	margin: 0px;
+	font-family: "Avenir";
+}
+
 a.schools{
 	background-image: url('../img/school.png');
 }
@@ -43,6 +49,8 @@ a.icon:hover{
 
 .ui-trigger-container:after{
 	content: "+";
+	float: right;
+	padding-right: 10%;
 }
 
 .active .ui-trigger-container:after{
@@ -54,7 +62,7 @@ a.icon:hover{
 }
 
 .datapoint a:first-child{
-	margin-left: 10px;
+	/*margin-left: 10px;*/
 }
 
 .navbar{
@@ -90,21 +98,49 @@ div.data-view-list{
 	margin-top: 20px;
 }
 
-body{
-	padding: 0px;
-	margin: 0px;
-}
-
 input{
-	width: 250px;
+	width: 45.8%;
 	line-height: 1.2em;
 	height: 1.2em;
 	font-size: 1.6em;
 }
 
 input[type=text]{
-	width: 504px;
+	width: 92%;
 	font-size: 1.2em;
+}
+
+.data-view-list{
+	width: 92%;
+	text-align: left;
+}
+
+.ui-date-range-and-string-search{
+}
+
+.emis{
+	padding-right: 15%;
+}
+.date{
+	padding-right: 10%;
+}
+.surveyor-id{
+	padding-right: 5%;
+}
+
+.datapoint{
+	line-height: 1.8em;
+	border-bottom: #cccccc thin solid;
+}
+
+.ui-section-title{
+	text-transform: capitalize;
+	font-weight: 600;
+	line-height: 2.4em;
+}
+
+.ui-hlist-item{
+	display: block;
 }
 
 
