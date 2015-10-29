@@ -25,6 +25,7 @@ function UI_DataHList(data, dataGroups, api) {
 								api: api,
 								suffix: "html"
 						}).appendTo(hListContainer.find(".group-"+item_1));
+						return;
 					}
 
 					$.ajax({
