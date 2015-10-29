@@ -1,0 +1,90 @@
+a.schools{
+	background-image: url('../img/school.png');
+}
+a.buildings{
+	background-image: url('../img/buildings.svg');
+}
+a.building-elements{
+	background-image: url('../img/building-elements.svg');
+}
+
+a.icon{
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	background-size: 18px;
+	padding-top: 2px;
+	padding-right: 2px;
+	background-position: 2px 2px;
+	background-repeat: no-repeat;
+}
+
+a.icon:hover{
+	opacity: 0.4;
+}
+
+.schools-downloaded a.schools{
+	pointer-events: none;
+}
+.buildings-downloaded a.buildings{
+	pointer-events: none;
+}
+.building-elements-downloaded a.building-elements{
+	pointer-events: none;
+}
+
+.datapoint a:first-child{
+	margin-left: 10px;
+}
+
+.navbar{
+	height: 40px;
+	background-color: #cc3333;
+}
+
+.nav-btns{
+	height: 60px;
+	float: right;
+	margin-right: 10px;
+}
+
+.nav-btns a{
+	width: 120px;
+	height: 40px;
+	line-height: 40px;
+	padding: 4px;
+	cursor: pointer;
+}
+.nav-btns a:hover{
+	background-color: rgba(255,255,255,0.6);
+}
+
+#app{
+	display: inline-block;
+	margin: 20%;
+	margin-top: 0%;
+	width: 60%;
+}
+
+div.data-view-list{
+	margin-top: 20px;
+}
+
+body{
+	padding: 0px;
+	margin: 0px;
+}
+
+input{
+	width: 250px;
+	line-height: 1.2em;
+	height: 1.2em;
+	font-size: 1.6em;
+}
+
+input[type=text]{
+	width: 504px;
+	font-size: 1.2em;
+}
+
+
