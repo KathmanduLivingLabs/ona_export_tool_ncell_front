@@ -26,8 +26,8 @@ function UI_DataHList(data, dataGroups, api) {
 						success: function(list){
 							console.log(hListContainer);
 							new UI_HList([item["emis"]], {
-								api: api,
-								suffix: "html"
+								api: api+"output/",
+								suffix: ".html"
 						}).appendTo(hListContainer.find(".group-"+item_1));
 						}
 						});
@@ -41,8 +41,8 @@ function UI_DataHList(data, dataGroups, api) {
 							console.log(hListContainer);
 							list = list.split(",");
 							new UI_HList(list, {
-								api: api,
-								suffix: "html"
+								api: api+"output/",
+								suffix: ".html"
 							}).appendTo(hListContainer.find(".group-"+item_1));
 							context.addClass(item_1+"-downloaded");
 							context.removeClass("passive");
