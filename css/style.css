@@ -127,6 +127,9 @@ input[type=text]{
 .surveyor-id{
 	padding-right: 5%;
 }
+.emis, .date, .surveyor-id, .ui-trigger-container{
+	cursor: pointer;
+}
 
 .datapoint{
 	line-height: 1.8em;
