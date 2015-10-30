@@ -120,7 +120,10 @@ function UI_DateRangeAndString(options) {
 	endDateField[0].value = options["default-end-date"];
 	$.extend(true, this, container);
 
-	$(container).find("input").change(function(e) {
+	$(container).find("input[type='date']").change(function(e) {
+		options["event-handlers"]["on-query"].call(context, e);
+	});
+	$(container).find("input[type='text']").keydown(function(e) {
 		options["event-handlers"]["on-query"].call(context, e);
 	});
 
