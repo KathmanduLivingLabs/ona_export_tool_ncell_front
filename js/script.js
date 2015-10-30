@@ -1,7 +1,7 @@
 config = {
 	api: "http://45.55.41.12:8006/",
 	dataGroups: ["schools", "buildings", "building-elements"],
-	surveyStartDate: "2015-09-28"
+	surveyStartDate: "2015-10-14"
 };
 
 function UI_DataHList(data, dataGroups, api) {
