@@ -234,6 +234,15 @@ $(document).ready(function() {
 		"default-end-date": (new Date()).toJSON().split("T")[0],
 		"event-handlers": {
 			"on-query": function(e) {
+
+				console.log(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]));
+
+				if(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"])>864000000){
+					$(".ui-large-button").addClass("passive");
+				}else{
+					$(".ui-large-button").removeClass("passive");
+				}
+
 				uiDataHList.update(jsonArraySearch(dataSet, this.getQueryObject().string, {
 					"key-value-in-range": {
 						"key": "submission-date",

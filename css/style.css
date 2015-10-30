@@ -167,3 +167,7 @@ input[type=text]{
 	text-decoration: underline;
 }
 
+.ui-large-button.passive{
+	opacity: 0;
+}
+
