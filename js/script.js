@@ -154,13 +154,13 @@ function UI_HList(data, options) {
 	if (data.length) {
 		dataCleaned = [];
 
-		data.forEach(function(item, index){
-			if(!(dataCleaned.indexOf(item)+1)){
+		data.forEach(function(item, index) {
+			if (!(dataCleaned.indexOf(item) + 1)) {
 				dataCleaned.push(item);
 			}
 		});
 
-		data=dataCleaned;
+		data = dataCleaned;
 
 
 		data.forEach(function(item, index) {
@@ -256,6 +256,9 @@ $(document).ready(function() {
 				url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"],
 				success: function(filename) {
 					$(context).parent().find("a.ui-hlist").remove();
+					if (filename = "") {
+						$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
+					}
 					$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
 						href: config.api + filename
 					}).text(filename));
@@ -264,6 +267,9 @@ $(document).ready(function() {
 						url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"],
 						success: function(filename) {
 							//$(context).parent().find("a.ui-hlist").remove();
+							if (filename = "") {
+								$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
+							}
 							$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
 								href: config.api + filename
 							}).text(filename));
@@ -272,6 +278,10 @@ $(document).ready(function() {
 								url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"],
 								success: function(filename) {
 									//$(context).parent().find("a.ui-hlist").remove();
+									if (filename = "") {
+										$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
+									}
+
 									$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
 										href: config.api + filename
 									}).text(filename));
