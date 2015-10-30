@@ -146,4 +146,12 @@ input[type=text]{
 	display: block;
 }
 
+.ui-large-button{
+	cursor: pointer;
+	line-height: 2em;
+}
+
+.ui-large-button:hover{
+	text-decoration: underline;
+}
 
