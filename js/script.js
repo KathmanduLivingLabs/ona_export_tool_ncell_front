@@ -123,7 +123,7 @@ function UI_DateRangeAndString(options) {
 	$(container).find("input[type='date']").change(function(e) {
 		options["event-handlers"]["on-query"].call(context, e);
 	});
-	$(container).find("input[type='text']").keydown(function(e) {
+	$(container).find("input[type='text']").keyup(function(e) {
 		options["event-handlers"]["on-query"].call(context, e);
 	});
 
