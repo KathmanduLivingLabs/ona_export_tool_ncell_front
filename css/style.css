@@ -67,7 +67,8 @@ a.icon:hover{
 
 .navbar{
 	height: 40px;
-	background-color: #cc3333;
+	background-color: #324B6E;
+	color: #ececec;
 }
 
 .nav-btns{
@@ -76,7 +77,7 @@ a.icon:hover{
 	margin-right: 10px;
 }
 
-.nav-btns a{
+.nav-btns a, .nav-btns span{
 	width: 120px;
 	height: 40px;
 	line-height: 40px;

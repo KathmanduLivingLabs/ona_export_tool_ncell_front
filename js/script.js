@@ -113,7 +113,7 @@ function UI_DateRangeAndString(options) {
 	var context = this;
 
 	var container = $("<div/>").addClass("ui-date-range-and-string-search");
-	var stringField = $("<input class='ui-searchbox' type='text'/>").appendTo(container);
+	var stringField = $("<input class='ui-searchbox' type='text' placeholder='Enter EMIS or Surveyor ID to filter the list below'/>").appendTo(container);
 	var startDateField = $("<input class='ui-start-date' type='date'/>").appendTo(container);
 	var endDateField = $("<input class='ui-end-date' type='date'/>").appendTo(container);
 	startDateField[0].value = options["default-start-date"];
@@ -149,6 +149,17 @@ function UI_DateRangeAndString(options) {
 function UI_HList(data, options) {
 	var container = $("<div/>").addClass("ui-hlist");
 	if (data.length) {
+		dataCleaned = [];
+
+		data.forEach(function(item, index){
+			if(!(dataCleaned.indexOf(item)+1)){
+				dataCleaned.push(item);
+			}
+		});
+
+		data=dataCleaned;
+
+
 		data.forEach(function(item, index) {
 			($("<a class='ui-hlist-item'/>").attr({
 				href: options.api + item + options.suffix,
