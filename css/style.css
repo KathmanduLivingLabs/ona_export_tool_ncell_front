@@ -66,7 +66,7 @@ a.icon:hover{
 }
 
 .navbar{
-	height: 40px;
+	height: 2.8em;
 	background-color: #324B6E;
 	color: #ececec;
 }
@@ -81,11 +81,22 @@ a.icon:hover{
 	width: 120px;
 	height: 40px;
 	line-height: 40px;
+	height: 2em;
 	padding: 4px;
+	padding-bottom: 12px;
+	/*padding-right: 8px;*/
 	cursor: pointer;
+	color: #ededed;
+	text-decoration: none;
 }
 .nav-btns a:hover{
-	background-color: rgba(255,255,255,0.6);
+	/*background-color: rgba(255,255,255,0.6);*/
+}
+.nav-btns a span{
+	display: block;
+	line-height: .84em;
+	font-size: .6em;
+	margin-top: -2.2em;
 }
 
 #app{
