@@ -9,48 +9,31 @@ function UI_DataHList(data, dataGroups, api) {
 
 	function _draw(data) {
 		data.forEach(function(item, index) {
-			var datapointRow = $('<div class="datapoint"></div>').click(function(e) {
+			/*var datapointRow = $('<a class="datapoint"></a>').click(function(e) {
 				context = $(this);
 				context.toggleClass("active");
-				if ($(this).hasClass("buildings-downloaded")) {
+				if ($(this).hasClass("content-ready")) {
 					return;
 				}
-				dataGroups.forEach(function(item_1, index_1) {
-					context.addClass("passive");
+				
 
-					hListContainer.append("<div class='group-" + item_1 + "'><span class='ui-section-title'>" + item_1 + "</span></div>");
-
-					if (item_1 === "schools") {
-						$.ajax({
-							url: api + "index.php?emis=" + item["emis"] + "&group=schools",
-							success: function(list) {
-								console.log(hListContainer);
-								new UI_HList([item["emis"]], {
-									api: api + "output/",
-									suffix: ".html"
-								}).appendTo(hListContainer.find(".group-" + item_1));
-							}
-						});
-
-						return;
+				$.ajax({
+					url: api + "index.php?emis=" + item["emis"],
+					success: function(list) {
+						$("<iframe class='hidden' src='output/"+item["emis"]+".pdf'>").appendTo("body");
+						
 					}
-
-					$.ajax({
-						url: api + "index.php?emis=" + item["emis"] + "&group=" + item_1.replace("-", "_"),
-						success: function(list) {
-							console.log(hListContainer);
-							list = list.split(",");
-							new UI_HList(list, {
-								api: api + "output/",
-								suffix: ".html"
-							}).appendTo(hListContainer.find(".group-" + item_1));
-							context.addClass(item_1 + "-downloaded");
-							context.removeClass("passive");
-						}
-					});
 				});
 
+
+
+			});*/
+
+			var datapointRow = $('<a class="datapoint"></a>').attr({
+				href: api+"index.php?emis=" + item["emis"],
+				target: "_blank"
 			});
+
 			datapointRow.append($('<span></span>').attr({
 				"class": "emis"
 			}).text(item["emis"]));
@@ -237,9 +220,9 @@ $(document).ready(function() {
 
 				console.log(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]));
 
-				if(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"])>864000000){
+				if (new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > 864000000) {
 					$(".ui-large-button").addClass("passive");
-				}else{
+				} else {
 					$(".ui-large-button").removeClass("passive");
 				}
 

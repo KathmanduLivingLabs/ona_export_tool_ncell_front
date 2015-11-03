@@ -48,13 +48,13 @@ a.icon:hover{
 }
 
 .ui-trigger-container:after{
-	content: "+";
+	/*content: "+";*/
 	float: right;
 	padding-right: 10%;
 }
 
 .active .ui-trigger-container:after{
-	content: "-";
+	/*content: "-";*/
 }
 
 .passive{
@@ -63,6 +63,14 @@ a.icon:hover{
 
 .datapoint a:first-child{
 	/*margin-left: 10px;*/
+}
+.datapoint{
+	display: block;
+	text-decoration: none;
+	color: #333333;
+}
+.datapoint:hover{
+	text-decoration: underline;
 }
 
 .navbar{
@@ -169,5 +177,9 @@ input[type=text]{
 
 .ui-large-button.passive{
 	opacity: 0;
+}
+
+.hidden{
+	display: none;
 }
 
