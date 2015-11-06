@@ -1,7 +1,7 @@
 config = {
 	api: "http://45.55.41.12:8006/",
 	dataGroups: ["schools", "buildings", "building-elements"],
-	surveyStartDate: "2015-10-23"
+	surveyStartDate: "2015/10/23"
 };
 
 function UI_DataHList(data, dataGroups, api) {
@@ -120,8 +120,8 @@ function UI_DateRangeAndString(options) {
 	function _getQueryObject() {
 		return {
 			"string": stringField[0].value,
-			"start-date": startDateField[0].value,
-			"end-date": endDateField[0].value
+			"start-date": new Date(startDateField[0].value).toJSON().split("T")[0],
+			"end-date": new Date(endDateField[0].value).toJSON().split("T")[0]
 		};
 	}
 
@@ -238,8 +238,16 @@ $(document).ready(function() {
 	});
 
 	uiQueryField.appendTo("#app");
+	//uiQueryField.onManifest();
 
-
+	if(!navigator.userAgent.match(/chrome/i)){
+		uiQueryField.find(".ui-start-date").datepicker({
+			format: "yy-mm-dd"
+		}).datepicker("setDate", new Date(config.surveyStartDate));
+		uiQueryField.find(".ui-end-date").datepicker({
+			format: "yy-mm-dd"
+		}).datepicker("setDate", new Date());
+	}
 
 	$("<div class='ui-raw-download-list'/>").append(function() {
 		return $("<a class='ui-large-button'>Download Data</a>").click(function(e) {

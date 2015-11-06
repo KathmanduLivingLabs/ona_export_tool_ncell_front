@@ -179,6 +179,10 @@ input[type=text]{
 	opacity: 0;
 }
 
+.ui-widget-header{
+	border: #999999 thin solid;
+}
+
 .hidden{
 	display: none;
 }
