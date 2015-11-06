@@ -30,7 +30,7 @@ function UI_DataHList(data, dataGroups, api) {
 			});*/
 
 			var datapointRow = $('<a class="datapoint"></a>').attr({
-				href: api+"index.php?emis=" + item["emis"],
+				href: api+"view.php?emis=" + item["emis"],
 				target: "_blank"
 			});
 
