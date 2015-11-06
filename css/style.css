@@ -69,7 +69,14 @@ a.icon:hover{
 	text-decoration: none;
 	color: #333333;
 }
-.datapoint:hover{
+.datapoint a{
+	float: right;
+	color: #3366aa;
+	text-decoration: none;
+	padding: 0% 1% 0% 3%;
+	cursor: pointer;
+}
+.datapoint a:hover{
 	text-decoration: underline;
 }
 
@@ -148,7 +155,7 @@ input[type=text]{
 	padding-right: 5%;
 }
 .emis, .date, .surveyor-id, .ui-trigger-container{
-	cursor: pointer;
+	/*cursor: pointer;*/
 }
 
 .datapoint{
