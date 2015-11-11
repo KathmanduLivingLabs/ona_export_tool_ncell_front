@@ -171,6 +171,7 @@ input[type=text]{
 
 .ui-hlist-item{
 	display: block;
+	line-height: 2.4em;
 }
 
 .ui-large-button{
@@ -188,6 +189,12 @@ input[type=text]{
 
 .ui-widget-header{
 	border: #999999 thin solid;
+}
+
+.ui-hlist-sidekick{
+	display: inline-block;
+	float: right;
+	margin-top: -1.6em;
 }
 
 .hidden{

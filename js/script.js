@@ -267,10 +267,14 @@ $(document).ready(function() {
 					$(context).parent().find("a.ui-hlist").remove();
 					if (filename === "") {
 						$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
-					}
+					}else{
 					$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
 						href: config.api + filename
 					}).text(filename));
+					$(context).parent().append($("<a class='ui-hlist-sidekick' target='_blank'/>").attr({
+						href: config.api + filename.replace(".zip", ".csv")
+					}).text("Download CSV Only"));
+				}
 
 					$.ajax({
 						url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"],
@@ -278,10 +282,14 @@ $(document).ready(function() {
 							//$(context).parent().find("a.ui-hlist").remove();
 							if (filename === "") {
 								$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
-							}
+							}else{
 							$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
 								href: config.api + filename
 							}).text(filename));
+							$(context).parent().append($("<a class='ui-hlist-sidekick' target='_blank'/>").attr({
+						href: config.api + filename.replace(".zip", ".csv")
+					}).text("Download CSV Only"));
+						}
 
 							$.ajax({
 								url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"],
@@ -289,11 +297,15 @@ $(document).ready(function() {
 									//$(context).parent().find("a.ui-hlist").remove();
 									if (filename === "") {
 										$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
-									}
+									}else{
 
 									$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
 										href: config.api + filename
 									}).text(filename));
+									$(context).parent().append($("<a class='ui-hlist-sidekick' target='_blank'/>").attr({
+						href: config.api + filename.replace(".zip", ".csv")
+					}).text("Download CSV Only"));
+								}
 								}
 							});
 						}
