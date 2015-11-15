@@ -197,6 +197,10 @@ input[type=text]{
 	margin-top: -1.6em;
 }
 
+.update-msg{
+	line-height: 2.2em;
+}
+
 .hidden{
 	display: none;
 }

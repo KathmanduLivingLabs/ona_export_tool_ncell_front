@@ -249,6 +249,16 @@ $(document).ready(function() {
 	uiQueryField.appendTo("#app");
 	//uiQueryField.onManifest();
 
+	var updateMsgBox = $("<div class='update-msg'></div>").appendTo("#app");
+	$.ajax({
+		url: config.api+"index.php?query=gettimestamp",
+		success: function(data){
+			data = Number(data);
+			updatetime = "Last update: "+Math.floor(data/3600)+"h"+Math.floor(data/60)+"m ago.";
+			updateMsgBox.text(updatetime);
+		}
+	});
+
 	if(!navigator.userAgent.match(/chrome/i)){
 		uiQueryField.find(".ui-start-date").datepicker({
 			format: "yy-mm-dd"
