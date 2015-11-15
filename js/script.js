@@ -254,7 +254,7 @@ $(document).ready(function() {
 		url: config.api+"index.php?query=gettimestamp",
 		success: function(data){
 			data = Number(data);
-			updatetime = "Last update: "+Math.floor(data/3600)+"h"+Math.floor(data/60)+"m ago.";
+			updatetime = "Last update: "+Math.floor(data/3600)+"h"+Math.floor((data/3600-Math.floor(data/3600))*60)+"m ago.";
 			updateMsgBox.text(updatetime);
 		}
 	});
