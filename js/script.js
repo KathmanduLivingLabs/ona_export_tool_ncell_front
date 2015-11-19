@@ -1,5 +1,5 @@
 config = {
-	api: "http://45.55.41.12:8006/",
+	api: "http://188.166.234.80:8006/",
 	dataGroups: ["schools", "buildings", "building-elements"],
 	surveyStartDate: "2015-10-23"
 };
