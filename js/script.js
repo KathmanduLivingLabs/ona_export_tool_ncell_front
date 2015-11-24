@@ -135,6 +135,33 @@ function UI_DateRangeAndString(options) {
 	return;
 }
 
+function UI_LoginPrompt(options){
+	var container = $("<div class='alert-box'></div>");
+	var userName = $("<input type='text' class='username'/>").appendTo(container);
+	var passwordBox = $("<input type='password' class='password'/>").appendTo(container);
+	
+	function _submit(){
+		$.ajax({
+			url: options.authUrl,
+			date: {
+				"authstring":""
+			}
+			success: function(){
+				if(!Boolean(data)){
+					alert("Invalid Credentials!");
+				}else{
+					options.eventHandlers.authorized();
+				}
+			},
+			method: "POST"
+		});
+	}
+	this.submit = function(){
+		return _submit();
+	}
+	return $.extend(this, container);
+}
+
 function UI_HList(data, options) {
 	var container = $("<div/>").addClass("ui-hlist");
 	if (data.length) {
@@ -190,6 +217,20 @@ $(document).ready(function() {
 	var dataSet = [];
 
 	var uiDataHList;
+
+	var loginPromptContainer = $("<div id='login-prompt'></div>").appendTo("body");
+	
+	new UI_LoginPrompt({
+		authUrl: config.authUrl,
+		eventHandlers: {
+			authorized: function(){
+				loginPromptContainer.remove();
+				init();
+			}
+		}
+	}).appendTo(loginPromptContainer);
+
+	function init(){
 
 	$.ajax({
 		url: config.api + "index.php",
@@ -331,6 +372,7 @@ $(document).ready(function() {
 
 		})
 	}).appendTo("#app");
+}
 
 
 
