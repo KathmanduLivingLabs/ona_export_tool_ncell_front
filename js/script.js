@@ -1,5 +1,6 @@
 config = {
 	api: "http://188.166.234.80:8006/",
+	authUrl: "http://188.166.234.80:8006/auth.php",
 	dataGroups: ["schools", "buildings", "building-elements"],
 	surveyStartDate: "2015-10-23"//
 };
@@ -137,17 +138,21 @@ function UI_DateRangeAndString(options) {
 
 function UI_LoginPrompt(options){
 	var container = $("<div class='alert-box'></div>");
-	var userName = $("<input type='text' class='username'/>").appendTo(container);
-	var passwordBox = $("<input type='password' class='password'/>").appendTo(container);
+	var userName = $("<input type='text' class='username' placeholder='username'/>").appendTo(container);
+	var passwordBox = $("<input type='password' class='password' placeholder='password'/>").appendTo(container);
+
+
+
 	
 	function _submit(){
 		$.ajax({
 			url: options.authUrl,
-			date: {
-				"authstring":""
-			}
-			success: function(){
-				if(!Boolean(data)){
+			data: {
+				"auth1": userName.val(),
+				"auth2": CryptoJS.AES.encrypt(passwordBox.val(), passwordBox.val()).toString()
+			},
+			success: function(data){
+				if(!Boolean(JSON.parse(data))){
 					alert("Invalid Credentials!");
 				}else{
 					options.eventHandlers.authorized();
@@ -156,9 +161,16 @@ function UI_LoginPrompt(options){
 			method: "POST"
 		});
 	}
-	this.submit = function(){
-		return _submit();
-	}
+
+	passwordBox.keyup(function(e){
+		if(e.keyCode===13){
+			_submit();
+		}
+	});
+	var submitButton = $("<a class='ui-button'>Login</a>").click(function(){
+		_submit();
+	}).appendTo(container);
+
 	return $.extend(this, container);
 }
 
@@ -218,7 +230,7 @@ $(document).ready(function() {
 
 	var uiDataHList;
 
-	var loginPromptContainer = $("<div id='login-prompt'></div>").appendTo("body");
+	var loginPromptContainer = $("<div id='login-prompt'><h4 class='msg'>Please login to continue..</h4></div>").appendTo("body");
 	
 	new UI_LoginPrompt({
 		authUrl: config.authUrl,

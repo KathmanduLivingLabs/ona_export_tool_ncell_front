@@ -201,6 +201,52 @@ input[type=text]{
 	line-height: 2.2em;
 }
 
+#login-prompt{
+	position: absolute;
+	width: 1366px;
+	height: 768px;
+	top: 0px;
+	left: 0px;
+	background-color: rgba(0,0,0,0.8);
+}
+#login-prompt .alert-box{
+	display: inline-block;
+	margin-top: 10%;
+	margin-left: 30%;
+	background-color: #ffffff;
+	border: #999999 1px solid;
+	padding: 60px 30px 30px 30px;
+}
+
+#login-prompt .msg{
+	position: absolute;
+	display: inline-block;
+	padding: 10px;
+	margin-top: 10%;
+	margin-left: 30%;
+	width: 388px;
+	font-weight: 300;
+	color: #ffffff;
+	background-color: #324B6E;
+}
+
+#login-prompt input{
+	display: block;
+	width: 340px;
+	font-size: 1.2em;
+	line-height: 1.8em;
+	height: 1.8em;
+	margin: 1em 0em;
+	padding: 0px 4px;
+}
+
+#login-prompt .ui-button{
+	padding: 4px;
+	background-color: #324B6E;
+	color: #ffffff;
+	float: right;
+}
+
 .hidden{
 	display: none;
 }
