@@ -1,6 +1,8 @@
 config = {
 	api: "http://188.166.234.80:8006/",
 	authUrl: "http://188.166.234.80:8006/auth.php",
+	//api: "localhost:8006/",
+	//authUrl: "localhost:8006/auth.php",
 	dataGroups: ["schools", "buildings", "building-elements"],
 	surveyStartDate: "2015-10-23"//
 };
@@ -330,7 +332,7 @@ $(document).ready(function() {
 		return $("<a class='ui-large-button'>Download Data</a>").click(function(e) {
 			var context = this;
 			$.ajax({
-				url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"],
+				url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
 				success: function(filename) {
 					$(context).parent().find("a.ui-hlist").remove();
 					if (filename === "") {
@@ -345,7 +347,7 @@ $(document).ready(function() {
 				}
 
 					$.ajax({
-						url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"],
+						url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
 						success: function(filename) {
 							//$(context).parent().find("a.ui-hlist").remove();
 							if (filename === "") {
@@ -360,7 +362,7 @@ $(document).ready(function() {
 						}
 
 							$.ajax({
-								url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"],
+								url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
 								success: function(filename) {
 									//$(context).parent().find("a.ui-hlist").remove();
 									if (filename === "") {
