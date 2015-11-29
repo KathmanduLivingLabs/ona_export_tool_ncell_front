@@ -4,8 +4,7 @@ config = {
 	//api: "localhost:8006/",
 	//authUrl: "localhost:8006/auth.php",
 	dataGroups: ["schools", "buildings", "building-elements"],
-	surveyStartDate: "2015-10-23",
-	maxdaterange: -1
+	surveyStartDate: "2015-10-23"//
 };
 
 function UI_DataHList(data, dataGroups, api) {
@@ -268,7 +267,7 @@ $(document).ready(function() {
 			uiDataHList = new UI_DataHList(jsonArraySearch(dataSet, "", {
 					"key-value-in-range": {
 						"key": "submission-date",
-						"range-start": new Date(new Date()-(config.maxdaterange>0?config.maxdaterange*(24*60*60*1000):864000000)).toJSON().split("T")[0],
+						"range-start": new Date(new Date()-864000000).toJSON().split("T")[0],
 						"range-end": new Date().toJSON().split("T")[0]
 					}
 				}), config.dataGroups, config.api);
@@ -278,14 +277,14 @@ $(document).ready(function() {
 	});
 
 	uiQueryField = new UI_DateRangeAndString({
-		"default-start-date": new Date(new Date()-(config.maxdaterange>0?config.maxdaterange*(24*60*60*1000):864000000)).toJSON().split("T")[0],
+		"default-start-date": new Date(new Date()-864000000).toJSON().split("T")[0],
 		"default-end-date": (new Date()).toJSON().split("T")[0],
 		"event-handlers": {
 			"on-query": function(e) {
 
 				//console.log(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]));
 
-				if ((new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"])<0)||(config.maxdaterange>0?(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > config.maxdaterange*(24*60*60*1000)):false)) {
+				if (new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > 864000000) {
 					$(".ui-large-button").addClass("passive");
 				} else {
 					$(".ui-large-button").removeClass("passive");
