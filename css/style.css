@@ -189,7 +189,7 @@ input[type=text]{
 }
 
 .ui-raw-download-list.passive:after{
-	content: "Please select a smaller range of dates from which to download the full dataset with pitcures, or use the link below to download CSV Only.";
+	content: "Please select a smaller range of dates from which to download the full dataset with photographs, or use the link below to download CSV Only.";
 	color: #7d7d7d;
 	font-weight: 100;
 }
