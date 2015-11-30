@@ -208,7 +208,7 @@ input[type=text]{
 	padding: 10px;
 	background-color: rgba(200,220,255,0.4);
 	outline: #cccccc thin solid;
-	max-height: 7em;
+	max-height: 10em;
 	overflow: auto;
 }
 .ui-raw-download-list.with-pictures{
