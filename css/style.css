@@ -184,7 +184,8 @@ input[type=text]{
 }
 
 .ui-large-button.passive{
-	opacity: 0;
+	/*opacity: 0;*/
+	display: none;
 }
 
 .ui-widget-header{
