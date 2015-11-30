@@ -285,8 +285,10 @@ $(document).ready(function() {
 
 					if (new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > 864000000) {
 						$(".ui-large-button.with-pictures").addClass("passive");
+						$(".ui-large-button.with-pictures").parent().addClass("passive");
 					} else {
 						$(".ui-large-button.with-pictures").removeClass("passive");
+						$(".ui-large-button.with-pictures").parent().removeClass("passive");
 					}
 
 					uiDataHList.update(jsonArraySearch(dataSet, this.getQueryObject().string, {

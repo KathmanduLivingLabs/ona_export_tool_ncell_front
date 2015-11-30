@@ -188,6 +188,12 @@ input[type=text]{
 	display: none;
 }
 
+.ui-raw-download-list.passive:after{
+	content: "Please select a smaller range of dates from which to download the full dataset with pitcures, or use the link below to download CSV Only.";
+	color: #7d7d7d;
+	font-weight: 100;
+}
+
 .ui-widget-header{
 	border: #999999 thin solid;
 }
