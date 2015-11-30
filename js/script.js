@@ -4,7 +4,7 @@ config = {
 	//api: "localhost:8006/",
 	//authUrl: "localhost:8006/auth.php",
 	dataGroups: ["schools", "buildings", "building-elements"],
-	surveyStartDate: "2015-10-23"//
+	surveyStartDate: "2015-10-23" //
 };
 
 function UI_DataHList(data, dataGroups, api) {
@@ -33,10 +33,10 @@ function UI_DataHList(data, dataGroups, api) {
 			});*/
 
 			var datapointRow = $('<span class="datapoint"></span>').append($("<a class='pdf-export'>PDF</a>").attr({
-				href: api+"index.php?emis=" + item["emis"],
+				href: api + "index.php?emis=" + item["emis"],
 				target: "_blank"
 			})).append($("<a class='webpage-view'>HTML</a>").attr({
-				href: api+"view.php?emis=" + item["emis"],
+				href: api + "view.php?emis=" + item["emis"],
 				target: "_blank"
 			}));
 
@@ -138,25 +138,24 @@ function UI_DateRangeAndString(options) {
 	return;
 }
 
-function UI_LoginPrompt(options){
+function UI_LoginPrompt(options) {
 	var container = $("<div class='alert-box'></div>");
 	var userName = $("<input type='text' class='username' placeholder='username'/>").appendTo(container);
 	var passwordBox = $("<input type='password' class='password' placeholder='password'/>").appendTo(container);
 
 
 
-	
-	function _submit(){
+	function _submit() {
 		$.ajax({
 			url: options.authUrl,
 			data: {
 				"auth1": userName.val(),
 				"auth2": CryptoJS.AES.encrypt(passwordBox.val(), passwordBox.val()).toString()
 			},
-			success: function(data){
-				if(!Boolean(JSON.parse(data))){
+			success: function(data) {
+				if (!Boolean(JSON.parse(data))) {
 					alert("Invalid Credentials!");
-				}else{
+				} else {
 					options.eventHandlers.authorized();
 				}
 			},
@@ -164,12 +163,12 @@ function UI_LoginPrompt(options){
 		});
 	}
 
-	passwordBox.keyup(function(e){
-		if(e.keyCode===13){
+	passwordBox.keyup(function(e) {
+		if (e.keyCode === 13) {
 			_submit();
 		}
 	});
-	var submitButton = $("<a class='ui-button'>Login</a>").click(function(){
+	var submitButton = $("<a class='ui-button'>Login</a>").click(function() {
 		_submit();
 	}).appendTo(container);
 
@@ -233,160 +232,211 @@ $(document).ready(function() {
 	var uiDataHList;
 
 	var loginPromptContainer = $("<div id='login-prompt'><h4 class='msg'>Please login to continue..</h4></div>").appendTo("body");
-	
+
 	new UI_LoginPrompt({
 		authUrl: config.authUrl,
 		eventHandlers: {
-			authorized: function(){
+			authorized: function() {
 				loginPromptContainer.remove();
 				init();
 			}
 		}
 	}).appendTo(loginPromptContainer);
 
-	function init(){
+	function init() {
 
-	$.ajax({
-		url: config.api + "index.php",
-		success: function(data) {
-			data = data.split("|");
-			data[0] = data[0].split(";");
-			data[1] = data[1].split(";");
-			data[2] = data[2].split(";");
+		$.ajax({
+			url: config.api + "index.php",
+			success: function(data) {
+				data = data.split("|");
+				data[0] = data[0].split(";");
+				data[1] = data[1].split(";");
+				data[2] = data[2].split(";");
 
-			//console.log(data);
+				//console.log(data);
 
-			data[0].forEach(function(item, index) {
-				dataSet.push({
-					"emis": "EMIS" + item,
-					"submission-date": data[1][index],
-					"surveyor-id": data[2][index]
+				data[0].forEach(function(item, index) {
+					dataSet.push({
+						"emis": "EMIS" + item,
+						"submission-date": data[1][index],
+						"surveyor-id": data[2][index]
+					});
 				});
-			});
 
-			uiDataHList = new UI_DataHList(jsonArraySearch(dataSet, "", {
+				uiDataHList = new UI_DataHList(jsonArraySearch(dataSet, "", {
 					"key-value-in-range": {
 						"key": "submission-date",
-						"range-start": new Date(new Date()-864000000).toJSON().split("T")[0],
+						"range-start": new Date(new Date() - 864000000).toJSON().split("T")[0],
 						"range-end": new Date().toJSON().split("T")[0]
 					}
 				}), config.dataGroups, config.api);
 
-			$("#app").append(uiDataHList);
-		}
-	});
-
-	uiQueryField = new UI_DateRangeAndString({
-		"default-start-date": new Date(new Date()-864000000).toJSON().split("T")[0],
-		"default-end-date": (new Date()).toJSON().split("T")[0],
-		"event-handlers": {
-			"on-query": function(e) {
-
-				//console.log(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]));
-
-				if (new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > 864000000) {
-					$(".ui-large-button").addClass("passive");
-				} else {
-					$(".ui-large-button").removeClass("passive");
-				}
-
-				uiDataHList.update(jsonArraySearch(dataSet, this.getQueryObject().string, {
-					"key-value-in-range": {
-						"key": "submission-date",
-						"range-start": this.getQueryObject()["start-date"],
-						"range-end": this.getQueryObject()["end-date"]
-					}
-				}));
+				$("#app").append(uiDataHList);
 			}
-		}
-	});
+		});
 
-	uiQueryField.appendTo("#app");
-	//uiQueryField.onManifest();
+		uiQueryField = new UI_DateRangeAndString({
+			"default-start-date": new Date(new Date() - 864000000).toJSON().split("T")[0],
+			"default-end-date": (new Date()).toJSON().split("T")[0],
+			"event-handlers": {
+				"on-query": function(e) {
 
-	var updateMsgBox = $("<div class='update-msg'></div>").appendTo("#app");
-	$.ajax({
-		url: config.api+"index.php?query=gettimestamp",
-		success: function(data){
-			data = Number(data);
-			updatetime = "Last update: "+Math.floor(data/3600)+"h"+Math.floor((data/3600-Math.floor(data/3600))*60)+"m ago.";
-				updateMsgBox.text(updatetime);
-			setInterval(function(){
-				updatetime = "Last update: "+Math.floor(data/3600)+"h"+Math.floor((data/3600-Math.floor(data/3600))*60)+"m ago.";
-				updateMsgBox.text(updatetime);
-				data+=60;
-			},60000);
-		}
-	});
+					//console.log(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]));
 
-	if(!navigator.userAgent.match(/chrome/i)){
-		uiQueryField.find(".ui-start-date").datepicker({
-			format: "yy-mm-dd"
-		}).datepicker("setDate", new Date(config.surveyStartDate));
-		uiQueryField.find(".ui-end-date").datepicker({
-			format: "yy-mm-dd"
-		}).datepicker("setDate", new Date());
-	}
+					if (new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > 864000000) {
+						$(".ui-large-button.with-pictures").addClass("passive");
+					} else {
+						$(".ui-large-button.with-pictures").removeClass("passive");
+					}
 
-	$("<div class='ui-raw-download-list'/>").append(function() {
-		return $("<a class='ui-large-button'>Download Data</a>").click(function(e) {
-			var context = this;
-			$.ajax({
-				url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
-				success: function(filename) {
-					$(context).parent().find("a.ui-hlist").remove();
-					if (filename === "") {
-						$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
-					}else{
-					$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
-						href: config.api + filename
-					}).text(filename));
-					$(context).parent().append($("<a class='ui-hlist-sidekick' target='_blank'/>").attr({
-						href: config.api + filename.replace(".zip", ".csv")
-					}).text("Download CSV Only"));
+					uiDataHList.update(jsonArraySearch(dataSet, this.getQueryObject().string, {
+						"key-value-in-range": {
+							"key": "submission-date",
+							"range-start": this.getQueryObject()["start-date"],
+							"range-end": this.getQueryObject()["end-date"]
+						}
+					}));
 				}
+			}
+		});
 
-					$.ajax({
-						url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
-						success: function(filename) {
-							//$(context).parent().find("a.ui-hlist").remove();
-							if (filename === "") {
-								$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
-							}else{
+		uiQueryField.appendTo("#app");
+		//uiQueryField.onManifest();
+
+		var updateMsgBox = $("<div class='update-msg'></div>").appendTo("#app");
+		$.ajax({
+			url: config.api + "index.php?query=gettimestamp",
+			success: function(data) {
+				data = Number(data);
+				updatetime = "Last update: " + Math.floor(data / 3600) + "h" + Math.floor((data / 3600 - Math.floor(data / 3600)) * 60) + "m ago.";
+				updateMsgBox.text(updatetime);
+				setInterval(function() {
+					updatetime = "Last update: " + Math.floor(data / 3600) + "h" + Math.floor((data / 3600 - Math.floor(data / 3600)) * 60) + "m ago.";
+					updateMsgBox.text(updatetime);
+					data += 60;
+				}, 60000);
+			}
+		});
+
+		if (!navigator.userAgent.match(/chrome/i)) {
+			uiQueryField.find(".ui-start-date").datepicker({
+				format: "yy-mm-dd"
+			}).datepicker("setDate", new Date(config.surveyStartDate));
+			uiQueryField.find(".ui-end-date").datepicker({
+				format: "yy-mm-dd"
+			}).datepicker("setDate", new Date());
+		}
+
+		$("<div class='ui-raw-download-list'/>").append(function() {
+			return $("<a class='ui-large-button with-pictures'>Download Data (Including Photographs)</a>").click(function(e) {
+				var context = this;
+				$.ajax({
+					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
+					success: function(filename) {
+						$(context).parent().find("a.ui-hlist").remove();
+						if (filename === "") {
+							$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
+						} else {
 							$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
 								href: config.api + filename
 							}).text(filename));
-							$(context).parent().append($("<a class='ui-hlist-sidekick' target='_blank'/>").attr({
-						href: config.api + filename.replace(".zip", ".csv")
-					}).text("Download CSV Only"));
+							
 						}
 
-							$.ajax({
-								url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
-								success: function(filename) {
-									//$(context).parent().find("a.ui-hlist").remove();
-									if (filename === "") {
-										$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
-									}else{
-
+						$.ajax({
+							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
+							success: function(filename) {
+								//$(context).parent().find("a.ui-hlist").remove();
+								if (filename === "") {
+									$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
+								} else {
 									$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
 										href: config.api + filename
 									}).text(filename));
-									$(context).parent().append($("<a class='ui-hlist-sidekick' target='_blank'/>").attr({
-						href: config.api + filename.replace(".zip", ".csv")
-					}).text("Download CSV Only"));
+									
 								}
-								}
-							});
+
+								$.ajax({
+									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
+									success: function(filename) {
+										//$(context).parent().find("a.ui-hlist").remove();
+										if (filename === "") {
+											$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
+										} else {
+
+											$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
+												href: config.api + filename
+											}).text(filename));
+											
+										}
+									}
+								});
+							}
+						});
+					}
+				});
+
+
+			})
+		}).appendTo("#app");
+
+
+		$("<div class='ui-raw-download-list'/>").append(function() {
+			return $("<a class='ui-large-button'>Download CSV Only</a>").click(function(e) {
+				var context = this;
+				$.ajax({
+					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly",
+					success: function(filename) {
+						$(context).parent().find("a.ui-hlist").remove();
+						if (filename === "") {
+							$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
+						} else {
+							$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
+								href: config.api + filename.replace(".zip", ".csv")
+							}).text(filename.replace(".zip", ".csv")));
+							
 						}
-					});
-				}
-			});
+
+						$.ajax({
+							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly",
+							success: function(filename) {
+								//$(context).parent().find("a.ui-hlist").remove();
+								if (filename === "") {
+									$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
+								} else {
+									$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
+										href: config.api + filename.replace(".zip", ".csv")
+									}).text(filename.replace(".zip", ".csv")));
+									
+								}
+
+								$.ajax({
+									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly",
+									success: function(filename) {
+										//$(context).parent().find("a.ui-hlist").remove();
+										if (filename === "") {
+											$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
+										} else {
+
+											$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
+												href: config.api + filename.replace(".zip", ".csv")
+											}).text(filename.replace(".zip", ".csv")));
+											
+										}
+									}
+								});
+							}
+						});
+					}
+				});
 
 
-		})
-	}).appendTo("#app");
-}
+			})
+		}).appendTo("#app");
+
+
+
+	}
 
 
 
