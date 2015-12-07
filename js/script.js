@@ -1,6 +1,6 @@
 config = {
-	api: "http://188.166.234.80:8006/",
-	authUrl: "http://188.166.234.80:8006/auth.php",
+	api: "http://188.166.234.80/",
+	authUrl: "http://188.166.234.80/auth.php",
 	//api: "localhost:8006/",
 	//authUrl: "localhost:8006/auth.php",
 	dataGroups: ["schools", "buildings", "building-elements"],
