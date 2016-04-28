@@ -1,11 +1,13 @@
 config = {
-	api: "http://188.166.234.80/",
-	authUrl: "http://188.166.234.80/auth.php",
-	//api: "localhost:8006/",
-	//authUrl: "localhost:8006/auth.php",
+	//api: "http://188.166.234.80/",
+	//authUrl: "http://188.166.234.80/auth.php",
+	api: "http://162.243.86.247/",
+	authUrl: "http://162.243.86.247/auth.php",
 	dataGroups: ["schools", "buildings", "building-elements"],
 	surveyStartDate: "2015-10-23" //
 };
+
+sessionGlobals={};
 
 function UI_DataHList(data, dataGroups, api) {
 	var container = $("<div/>").addClass("data-view-list");
@@ -21,7 +23,7 @@ function UI_DataHList(data, dataGroups, api) {
 				
 
 				$.ajax({
-					url: api + "index.php?emis=" + item["emis"],
+					url: api + "download.php?emis=" + item["emis"],
 					success: function(list) {
 						$("<iframe class='hidden' src='output/"+item["emis"]+".pdf'>").appendTo("body");
 						
@@ -33,10 +35,10 @@ function UI_DataHList(data, dataGroups, api) {
 			});*/
 
 			var datapointRow = $('<span class="datapoint"></span>').append($("<a class='pdf-export'>PDF</a>").attr({
-				href: api + "index.php?emis=" + item["emis"],
+				href: api + "download.php?emis=" + item["emis"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 				target: "_blank"
 			})).append($("<a class='webpage-view'>HTML</a>").attr({
-				href: api + "view.php?emis=" + item["emis"],
+				href: api + "view.php?emis=" + item["emis"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 				target: "_blank"
 			}));
 
@@ -63,7 +65,7 @@ function UI_DataHList(data, dataGroups, api) {
 				}).click(function(e){
 
 					$.ajax({
-						url: api+"index.php?emis="+item["emis"]+"&group="+item_1.replace("-","_"),
+						url: api+"download.php?emis="+item["emis"]+"&group="+item_1.replace("-","_"),
 						success: function(list){
 							console.log(hListContainer);
 							list = list.split(",");
@@ -153,10 +155,10 @@ function UI_LoginPrompt(options) {
 				"auth2": CryptoJS.AES.encrypt(passwordBox.val(), passwordBox.val()).toString()
 			},
 			success: function(data) {
-				if (!Boolean(JSON.parse(data))) {
+				if (!Boolean(JSON.parse(data)['authorized'])) {
 					alert("Invalid Credentials!");
 				} else {
-					options.eventHandlers.authorized();
+					options.eventHandlers.authorized(JSON.parse(data)['session']);
 				}
 			},
 			method: "POST"
@@ -175,6 +177,7 @@ function UI_LoginPrompt(options) {
 	return $.extend(this, container);
 }
 
+/* following code no longer relevant:
 function UI_HList(data, options) {
 	var container = $("<div/>").addClass("ui-hlist");
 	if (data.length) {
@@ -201,6 +204,7 @@ function UI_HList(data, options) {
 	$.extend(true, this, container);
 	return;
 }
+*/
 
 function jsonArraySearch(jsonArray, queryString, options) {
 	var searchResult = [];
@@ -236,7 +240,11 @@ $(document).ready(function() {
 	new UI_LoginPrompt({
 		authUrl: config.authUrl,
 		eventHandlers: {
-			authorized: function() {
+			authorized: function(session) {
+				sessionGlobals={
+					"surveyor_id": session["surveyor_id"],
+					"key": session["key"]
+				};
 				loginPromptContainer.remove();
 				init();
 			}
@@ -246,7 +254,7 @@ $(document).ready(function() {
 	function init() {
 
 		$.ajax({
-			url: config.api + "index.php",
+			url: config.api + "download.php"+"?key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 			success: function(data) {
 				data = data.split("|");
 				data[0] = data[0].split(";");
@@ -307,7 +315,7 @@ $(document).ready(function() {
 
 		var updateMsgBox = $("<div class='update-msg'></div>").appendTo("#app");
 		$.ajax({
-			url: config.api + "index.php?query=gettimestamp",
+			url: config.api + "download.php?query=gettimestamp"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 			success: function(data) {
 				data = Number(data);
 				updatetime = "Last update: " + Math.floor(data / 3600) + "h" + Math.floor((data / 3600 - Math.floor(data / 3600)) * 60) + "m ago.";
@@ -333,33 +341,33 @@ $(document).ready(function() {
 			return $("<a class='ui-large-button with-pictures'>Download Data (Including Photographs)</a>").click(function(e) {
 				var context = this;
 				$.ajax({
-					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
+					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 					success: function(filename) {
 						$(context).parent().find("a.ui-hlist").remove();
 						if (filename === "") {
 							$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
 						} else {
 							$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
-								href: config.api + filename
+								href: config.api + filename + "?key="+sessionGlobals["key"]
 							}).text(filename));
 							
 						}
 
 						$.ajax({
-							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
+							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 							success: function(filename) {
 								//$(context).parent().find("a.ui-hlist").remove();
 								if (filename === "") {
 									$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
 								} else {
 									$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
-										href: config.api + filename
+										href: config.api + filename +"?key="+sessionGlobals["key"]
 									}).text(filename));
 									
 								}
 
 								$.ajax({
-									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"],
+									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 									success: function(filename) {
 										//$(context).parent().find("a.ui-hlist").remove();
 										if (filename === "") {
@@ -367,7 +375,7 @@ $(document).ready(function() {
 										} else {
 
 											$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
-												href: config.api + filename
+												href: config.api + filename +"?key="+sessionGlobals["key"]
 											}).text(filename));
 											
 										}
@@ -387,33 +395,33 @@ $(document).ready(function() {
 			return $("<a class='ui-large-button'>Download CSV Only</a>").click(function(e) {
 				var context = this;
 				$.ajax({
-					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly",
+					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 					success: function(filename) {
 						$(context).parent().find("a.ui-hlist").remove();
 						if (filename === "") {
 							$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
 						} else {
 							$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
-								href: config.api + filename.replace(".zip", ".csv")
+								href: config.api + filename.replace(".zip", ".csv")+"?key="+sessionGlobals["key"]
 							}).text(filename.replace(".zip", ".csv")));
 							
 						}
 
 						$.ajax({
-							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly",
+							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 							success: function(filename) {
 								//$(context).parent().find("a.ui-hlist").remove();
 								if (filename === "") {
 									$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
 								} else {
 									$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
-										href: config.api + filename.replace(".zip", ".csv")
+										href: config.api + filename.replace(".zip", ".csv")+"?key="+sessionGlobals["key"]
 									}).text(filename.replace(".zip", ".csv")));
 									
 								}
 
 								$.ajax({
-									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly",
+									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 									success: function(filename) {
 										//$(context).parent().find("a.ui-hlist").remove();
 										if (filename === "") {
@@ -421,7 +429,7 @@ $(document).ready(function() {
 										} else {
 
 											$(context).parent().append($("<a class='ui-hlist-item' target='_blank'/>").attr({
-												href: config.api + filename.replace(".zip", ".csv")
+												href: config.api + filename.replace(".zip", ".csv")+"?key="+sessionGlobals["key"]
 											}).text(filename.replace(".zip", ".csv")));
 											
 										}
