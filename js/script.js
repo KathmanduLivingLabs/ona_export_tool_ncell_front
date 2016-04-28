@@ -1,8 +1,8 @@
 config = {
-	api: "http://188.166.234.80/",
-	authUrl: "http://188.166.234.80/auth.php",
-	//api: "http://162.243.86.247/",
-	//authUrl: "http://162.243.86.247/auth.php",
+	//api: "http://188.166.234.80/",
+	//authUrl: "http://188.166.234.80/auth.php",
+	api: "http://162.243.86.247/",
+	authUrl: "http://162.243.86.247/auth.php",
 	dataGroups: ["schools", "buildings", "building-elements"],
 	surveyStartDate: "2015-10-23" //
 };
