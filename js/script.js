@@ -1,6 +1,6 @@
 config = {
-	api: "http://139.59.28.75/ona_export_tool_tunnel_house/",
-	authUrl: "http://139.59.28.75/ona_export_tool_tunnel_house/auth.php",
+	api: "http://139.59.28.75/ona_export_tool_awareness_campaign/",
+	authUrl: "http://139.59.28.75/ona_export_tool_awareness_campaign/auth.php",
 	dataGroups: ["tunnel_house"],
 	surveyStartDate: "2015-10-23"
 };
