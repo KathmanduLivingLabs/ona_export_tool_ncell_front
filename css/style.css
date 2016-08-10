@@ -154,7 +154,7 @@ input[type=text]{
 .surveyor-id{
 	padding-right: 5%;
 }
-.emis, .date, .surveyor-id, .ui-trigger-container{
+.emis, .date, .ui-trigger-container{
 	/*cursor: pointer;*/
 }
 

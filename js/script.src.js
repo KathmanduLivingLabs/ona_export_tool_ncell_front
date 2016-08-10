@@ -1,7 +1,7 @@
 config = {
-	api: "http://162.243.86.247/",
-	authUrl: "http://162.243.86.247/auth.php",
-	dataGroups: ["schools", "buildings", "building-elements"],
+	api: "http://139.59.28.75/",
+	authUrl: "http://139.59.28.75/auth.php",
+	dataGroups: ["schools"],
 	surveyStartDate: "2015-10-23"
 };
 
@@ -57,7 +57,7 @@ function UI_DataHList(data, dataGroups, api) {
 
 
 
-			/*dataGroups.forEach(function(item_1, index_1) {
+			dataGroups.forEach(function(item_1, index_1) {
 				triggerContainer.append($('<a></a>').attr({
 					"class": item_1 + " icon"
 				}).click(function(e){
@@ -77,7 +77,7 @@ function UI_DataHList(data, dataGroups, api) {
 					
 				}));
 				hListContainer.append("<div class='group-"+item_1+"'><h4>"+item_1+"</h4></div>");
-			});*/
+			});
 			container.append(datapointRow);
 		});
 	}
@@ -263,7 +263,7 @@ $(document).ready(function() {
 
 				data[0].forEach(function(item, index) {
 					dataSet.push({
-						"emis": "EMIS" + item,
+						"emis": item,
 						"submission-date": data[1][index],
 						"surveyor-id": data[2][index]
 					});
