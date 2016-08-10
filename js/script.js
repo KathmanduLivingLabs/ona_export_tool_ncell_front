@@ -1,8 +1,8 @@
 config = {
-	api: "http://139.59.28.75/ona_export_tool_tunnel_house/",
-	authUrl: "http://139.59.28.75/ona_export_tool_tunnel_house/auth.php",
+    api: "http://127.0.0.1:9000/",
+	authUrl: "http://127.0.0.1:9000/auth.php",
 	dataGroups: ["tunnel_house"],
-	surveyStartDate: "2015-10-23"
+	surveyStartDate: "0001-01-01"
 };
 
 sessionGlobals={};
@@ -159,7 +159,8 @@ function UI_LoginPrompt(options) {
 					options.eventHandlers.authorized(JSON.parse(data)['session']);
 				}
 			},
-			method: "POST"
+			method: "POST",
+            crossDomain: true
 		});
 	}
 
@@ -253,6 +254,7 @@ $(document).ready(function() {
 
 		$.ajax({
 			url: config.api + "download.php"+"?key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+            crossDomain: true,
 			success: function(data) {
 				data = data.split("|");
 				data[0] = data[0].split(";");
@@ -272,7 +274,7 @@ $(document).ready(function() {
 				uiDataHList = new UI_DataHList(jsonArraySearch(dataSet, "", {
 					"key-value-in-range": {
 						"key": "submission-date",
-						"range-start": new Date(new Date() - 864000000).toJSON().split("T")[0],
+						"range-start": new Date(new Date() - 31536000000).toJSON().split("T")[0],
 						"range-end": new Date().toJSON().split("T")[0]
 					}
 				}), config.dataGroups, config.api);
@@ -282,14 +284,14 @@ $(document).ready(function() {
 		});
 
 		uiQueryField = new UI_DateRangeAndString({
-			"default-start-date": new Date(new Date() - 864000000).toJSON().split("T")[0],
+			"default-start-date": new Date(new Date() - 31536000000).toJSON().split("T")[0],
 			"default-end-date": (new Date()).toJSON().split("T")[0],
 			"event-handlers": {
 				"on-query": function(e) {
 
 					//console.log(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]));
 
-					if (new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > 864000000) {
+					if (new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > 31536000000) {
 						$(".ui-large-button.with-pictures").addClass("passive");
 						$(".ui-large-button.with-pictures").parent().addClass("passive");
 					} else {
@@ -314,6 +316,7 @@ $(document).ready(function() {
 		var updateMsgBox = $("<div class='update-msg'></div>").appendTo("#app");
 		$.ajax({
 			url: config.api + "download.php?query=gettimestamp"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+            crossDomain: true,
 			success: function(data) {
 				data = Number(data);
 				updatetime = "Last update: " + Math.floor(data / 3600) + "h" + Math.floor((data / 3600 - Math.floor(data / 3600)) * 60) + "m ago.";
@@ -340,6 +343,7 @@ $(document).ready(function() {
 				var context = this;
 				$.ajax({
 					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                    crossDomain: true,
 					success: function(filename) {
 						$(context).parent().find("a.ui-hlist").remove();
 						if (filename === "") {
@@ -353,6 +357,7 @@ $(document).ready(function() {
 
 						$.ajax({
 							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                            crossDomain: true,
 							success: function(filename) {
 								//$(context).parent().find("a.ui-hlist").remove();
 								if (filename === "") {
@@ -366,6 +371,7 @@ $(document).ready(function() {
 
 								$.ajax({
 									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                                    crossDomain: true,
 									success: function(filename) {
 										//$(context).parent().find("a.ui-hlist").remove();
 										if (filename === "") {
@@ -394,6 +400,7 @@ $(document).ready(function() {
 				var context = this;
 				$.ajax({
 					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                    crossDomain: true,
 					success: function(filename) {
 						$(context).parent().find("a.ui-hlist").remove();
 						if (filename === "") {
@@ -407,6 +414,7 @@ $(document).ready(function() {
 
 						$.ajax({
 							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                            crossDomain: true,
 							success: function(filename) {
 								//$(context).parent().find("a.ui-hlist").remove();
 								if (filename === "") {
@@ -420,7 +428,8 @@ $(document).ready(function() {
 
 								$.ajax({
 									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
-									success: function(filename) {
+									crossDomain: true,
+                                    success: function(filename) {
 										//$(context).parent().find("a.ui-hlist").remove();
 										if (filename === "") {
 											$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
