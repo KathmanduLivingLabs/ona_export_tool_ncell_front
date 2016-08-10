@@ -41,14 +41,47 @@ function UI_DataHList(data, dataGroups, api) {
 			}));
 
 			datapointRow.append($('<span></span>').attr({
-				"class": "emis"
-			}).text(item["emis"]));
+				"class": "project_id num"
+			}).text(item["project_id"]));
 			datapointRow.append($('<span></span>').attr({
 				"class": "date"
 			}).text(item["submission-date"]));
 			datapointRow.append($('<span></span>').attr({
-				"class": "surveyor-id"
-			}).text(item["surveyor-id"]));
+				"class": "district"
+			}).text(item["district"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "vdc"
+			}).text(item["vdc"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "ward num"
+			}).text(item["ward"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "government-auth"
+			}).text(item["government-auth"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "community-auth"
+			}).text(item["community-auth"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "project_manager"
+			}).text(item["project_manager"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "number_of_volunteers_central num"
+			}).text(item["number_of_volunteers_central"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "number_of_volunteers_local num"
+			}).text(item["number_of_volunteers_local"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "number_of_members num"
+			}).text(item["number_of_members"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "number_of_children num"
+			}).text(item["number_of_children"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "material_used"
+			}).text(item["material_used"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "builder_name"
+			}).text(item["builder_name"]));
 
 			var triggerContainer = $("<span class='ui-trigger-container'/>").appendTo(datapointRow);
 			var hListContainer = $("<div class='ui-hlist-container'/>").appendTo(datapointRow).click(function(e) {
@@ -80,6 +113,61 @@ function UI_DataHList(data, dataGroups, api) {
 			});*/
 			container.append(datapointRow);
 		});
+
+        var sumField = function(className, container){
+            var _sumField = 0;
+            $(container.find(className)).each(function(index, item){
+                _sumField += Number($(item).text());
+            });
+            return _sumField;
+        }
+
+        var datapointRow = $('<span class="datapoint headers"></span>');
+        datapointRow.append($('<span></span>').attr({
+            "class": "project_id num"
+        }).text("Proj. ID"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "date"
+        }).text("Sub. Date"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "district"
+        }).text("Dist."));
+        datapointRow.append($('<span></span>').attr({
+            "class": "vdc"
+        }).text("VDC"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "ward num"
+        }).text("Ward"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "government-auth"
+        }).text("Government Authority"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "community-auth"
+        }).text("Community Authority"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "project_manager"
+        }).text("Project Manager"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "number_of_volunteers_central num"
+        }).html("Volunteers Central <br/><span>["+sumField('.number_of_volunteers_central', container)+']</span>'));
+        datapointRow.append($('<span></span>').attr({
+            "class": "number_of_volunteers_local num"
+        }).html("Volunteers Local <br/><span>["+sumField('.number_of_volunteers_local', container)+']</span>'));
+        datapointRow.append($('<span></span>').attr({
+            "class": "number_of_members num"
+        }).html("Beneficiary Members <br/><span>["+sumField('.number_of_members', container)+']</span>'));
+        datapointRow.append($('<span></span>').attr({
+            "class": "number_of_children num"
+        }).html("Children <br/><span>["+sumField('.number_of_children', container)+']</span>'));
+        datapointRow.append($('<span></span>').attr({
+            "class": "material_used"
+        }).text("Building Material"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "builder_name"
+        }).text("Builder"));
+
+        container.prepend(datapointRow);
+
 	}
 
 	function _update(data) {
@@ -248,7 +336,7 @@ $(document).ready(function() {
 				init();
 			}
 		}
-	}).appendTo(loginPromptContainer);
+	}).appendTo(loginPromptContainer).find('a.ui-button').click();
 
 	function init() {
 
@@ -260,6 +348,18 @@ $(document).ready(function() {
 				data[0] = data[0].split(";");
 				data[1] = data[1].split(";");
 				data[2] = data[2].split(";");
+                data[3] = data[3].split(";");
+                data[4] = data[4].split(";");
+                data[5] = data[5].split(";");
+				data[6] = data[6].split(";");
+				data[7] = data[7].split(";");
+                data[8] = data[8].split(";");
+                data[9] = data[9].split(";");
+                data[10] = data[10].split(";");
+                data[11] = data[11].split(";");
+                data[12] = data[12].split(";");
+                data[13] = data[13].split(";");
+                data[14] = data[14].split(";");
 
 				//console.log(data);
 
@@ -267,7 +367,19 @@ $(document).ready(function() {
 					dataSet.push({
 						"emis": item,
 						"submission-date": data[1][index],
-						"surveyor-id": data[2][index]
+						"district": data[2][index],
+                        "vdc": data[3][index],
+                        "ward": data[4][index],
+                        "government-auth": data[5][index],
+                        "community-auth": data[6][index],
+                        "project_manager": data[7][index],
+                        "number_of_volunteers_central": data[8][index],
+                        "number_of_volunteers_local": data[9][index],
+                        "number_of_members": data[10][index],
+                        "number_of_children": data[11][index],
+                        "material_used": data[12][index],
+                        "builder_name": data[13][index],
+                        "project_id": data[14][index]
 					});
 				});
 
