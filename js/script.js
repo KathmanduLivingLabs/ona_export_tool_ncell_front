@@ -1,11 +1,7 @@
 config = {
-<<<<<<< HEAD
 	api: "http://139.59.28.75/ona_export_tool_awareness_campaign/",
 	authUrl: "http://139.59.28.75/ona_export_tool_awareness_campaign/auth.php",
-=======
-    api: "http://127.0.0.1:9000/",
-	authUrl: "http://127.0.0.1:9000/auth.php",
->>>>>>> origin/aug-10-jedi-field-details
+
 	dataGroups: ["tunnel_house"],
 	surveyStartDate: "0001-01-01"
 };
