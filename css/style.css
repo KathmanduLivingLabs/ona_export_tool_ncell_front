@@ -73,7 +73,7 @@ a.icon:hover{
 	float: right;
 	color: #3366aa;
 	text-decoration: none;
-	padding: 0% 1% 0% 3%;
+	padding: 0% 1% 0% 1%;
 	cursor: pointer;
 }
 .datapoint a:hover{
@@ -82,8 +82,8 @@ a.icon:hover{
 
 .navbar{
 	height: 2.8em;
-	background-color: #324B6E;
-	color: #ececec;
+	background-color: #333377;
+	color: #dedede;
 }
 
 .nav-btns{
@@ -116,9 +116,11 @@ a.icon:hover{
 
 #app{
 	display: inline-block;
-	margin: 20%;
+	/*margin: 20%;*/
+    margin: 2%;
 	margin-top: 0%;
-	width: 60%;
+	/*width: 60%;*/
+    width: 96%;
 }
 
 div.data-view-list{
@@ -138,8 +140,10 @@ input[type=text]{
 }
 
 .data-view-list{
-	width: 92%;
-	text-align: left;
+	/*width: 92%;*/
+	/*text-align: left;*/
+    text-align: left;
+    width: 100%;
 }
 
 .ui-date-range-and-string-search{
@@ -218,6 +222,66 @@ input[type=text]{
 .update-msg{
 	line-height: 2.2em;
 }
+
+.datapoint>span{
+    /*min-width: 40px;*/
+    max-width: 120px;
+    display: table-cell;
+    padding: 0px 8px;
+    /*border-left: #cccccc thin solid;*/
+    /*border-right: #cccccc thin solid;*/
+    font-size: 10pt;
+    color: #666666;
+}
+.datapoint>span.num{
+    width: 20px;
+}
+.datapoint .ui-trigger-container{
+    display: none;
+}
+
+.datapoint.headers>span{
+    width: 110px;
+    /*font-size: 8pt;*/
+    overflow: hidden;
+    line-height: 12pt;
+    border: none;
+    /*background-color: #333377;*/
+    background-color: rgba(110,102,165,1);
+    /*color: #dedede;*/
+    color: #efefef;
+    font-weight: 400;
+    padding-bottom: 10px;
+    padding-top: 4px;
+    display: table-cell;
+}
+.datapoint.headers>span.num{
+    width: 20px;
+}
+.datapoint.headers>span.num>span{
+    font-size: 11pt;
+    font-weight: 600;
+    color: #ffffff;
+}
+.datapoint{
+    display: block;
+    width: 100%;
+}
+
+/*.datapoint.headers>span{
+    min-width: 80px;
+    /*max-width: 90px;*
+    max-width: 140px;
+    transform: rotate(-80deg) translateX(20px);
+    border: none;
+    line-height: 9pt;
+    overflow: hidden;
+}
+.datapoint.headers>span.num{
+    min-width: initial;
+    max-width: initial;
+    width: 40px;
+}*/
 
 #login-prompt{
 	position: absolute;
