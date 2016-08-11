@@ -1,6 +1,6 @@
 config = {
-    api: "http://127.0.0.1:9000/",
-	authUrl: "http://127.0.0.1:9000/auth.php",
+    api: "http://139.59.28.75/ona_export_tool_toilet/",
+	authUrl: "http://139.59.28.75/ona_export_tool_toilet/auth.php",
 	dataGroups: ["tunnel_house"],
 	surveyStartDate: "0001-01-01"
 };
