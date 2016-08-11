@@ -2,7 +2,7 @@ config = {
 	api: "http://139.59.28.75/ona_export_tool_health_camp/",
 	authUrl: "http://139.59.28.75/ona_export_tool_health_camp/auth.php",
 	dataGroups: ["tunnel_house"],
-	surveyStartDate: "2015-10-23"
+	surveyStartDate: "0001-01-01"
 };
 
 sessionGlobals={};
@@ -41,14 +41,47 @@ function UI_DataHList(data, dataGroups, api) {
 			}));
 
 			datapointRow.append($('<span></span>').attr({
-				"class": "emis"
-			}).text(item["emis"]));
+				"class": "project_id num"
+			}).text(item["project_id"]));
 			datapointRow.append($('<span></span>').attr({
 				"class": "date"
 			}).text(item["submission-date"]));
 			datapointRow.append($('<span></span>').attr({
-				"class": "surveyor-id"
-			}).text(item["surveyor-id"]));
+				"class": "district"
+			}).text(item["district"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "vdc"
+			}).text(item["vdc"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "ward num"
+			}).text(item["ward"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "government-auth"
+			}).text(item["government-auth"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "community-auth"
+			}).text(item["community-auth"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "project_manager"
+			}).text(item["project_manager"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "number_of_volunteers_central num"
+			}).text(item["number_of_volunteers_central"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "number_of_volunteers_local num"
+			}).text(item["number_of_volunteers_local"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "number_of_members num"
+			}).text(item["number_of_members"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "number_of_children num"
+			}).text(item["number_of_children"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "material_used"
+			}).text(item["material_used"]));
+            datapointRow.append($('<span></span>').attr({
+				"class": "builder_name"
+			}).text(item["builder_name"]));
 
 			var triggerContainer = $("<span class='ui-trigger-container'/>").appendTo(datapointRow);
 			var hListContainer = $("<div class='ui-hlist-container'/>").appendTo(datapointRow).click(function(e) {
@@ -80,6 +113,61 @@ function UI_DataHList(data, dataGroups, api) {
 			});*/
 			container.append(datapointRow);
 		});
+
+        var sumField = function(className, container){
+            var _sumField = 0;
+            $(container.find(className)).each(function(index, item){
+                _sumField += Number($(item).text());
+            });
+            return _sumField;
+        }
+
+        var datapointRow = $('<span class="datapoint headers"></span>');
+        datapointRow.append($('<span></span>').attr({
+            "class": "project_id num"
+        }).text("Proj. ID"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "date"
+        }).text("Sub. Date"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "district"
+        }).text("Dist."));
+        datapointRow.append($('<span></span>').attr({
+            "class": "vdc"
+        }).text("VDC"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "ward num"
+        }).text("Ward"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "government-auth"
+        }).text("Government Authority"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "community-auth"
+        }).text("Community Authority"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "project_manager"
+        }).text("Project Manager"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "number_of_volunteers_central num"
+        }).html("Volunteers Central <br/><span>["+sumField('.number_of_volunteers_central', container)+']</span>'));
+        datapointRow.append($('<span></span>').attr({
+            "class": "number_of_volunteers_local num"
+        }).html("Volunteers Local <br/><span>["+sumField('.number_of_volunteers_local', container)+']</span>'));
+        datapointRow.append($('<span></span>').attr({
+            "class": "number_of_members num"
+        }).html("Beneficiary Members <br/><span>["+sumField('.number_of_members', container)+']</span>'));
+        datapointRow.append($('<span></span>').attr({
+            "class": "number_of_children num"
+        }).html("Children <br/><span>["+sumField('.number_of_children', container)+']</span>'));
+        datapointRow.append($('<span></span>').attr({
+            "class": "material_used"
+        }).text("Building Material"));
+        datapointRow.append($('<span></span>').attr({
+            "class": "builder_name"
+        }).text("Builder"));
+
+        container.prepend(datapointRow);
+
 	}
 
 	function _update(data) {
@@ -159,7 +247,8 @@ function UI_LoginPrompt(options) {
 					options.eventHandlers.authorized(JSON.parse(data)['session']);
 				}
 			},
-			method: "POST"
+			method: "POST",
+            crossDomain: true
 		});
 	}
 
@@ -247,17 +336,30 @@ $(document).ready(function() {
 				init();
 			}
 		}
-	}).appendTo(loginPromptContainer);
+	}).appendTo(loginPromptContainer).find('a.ui-button').click();
 
 	function init() {
 
 		$.ajax({
 			url: config.api + "download.php"+"?key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+            crossDomain: true,
 			success: function(data) {
 				data = data.split("|");
 				data[0] = data[0].split(";");
 				data[1] = data[1].split(";");
 				data[2] = data[2].split(";");
+                data[3] = data[3].split(";");
+                data[4] = data[4].split(";");
+                data[5] = data[5].split(";");
+				data[6] = data[6].split(";");
+				data[7] = data[7].split(";");
+                data[8] = data[8].split(";");
+                data[9] = data[9].split(";");
+                data[10] = data[10].split(";");
+                data[11] = data[11].split(";");
+                data[12] = data[12].split(";");
+                data[13] = data[13].split(";");
+                data[14] = data[14].split(";");
 
 				//console.log(data);
 
@@ -265,14 +367,26 @@ $(document).ready(function() {
 					dataSet.push({
 						"emis": item,
 						"submission-date": data[1][index],
-						"surveyor-id": data[2][index]
+						"district": data[2][index],
+                        "vdc": data[3][index],
+                        "ward": data[4][index],
+                        "government-auth": data[5][index],
+                        "community-auth": data[6][index],
+                        "project_manager": data[7][index],
+                        "number_of_volunteers_central": data[8][index],
+                        "number_of_volunteers_local": data[9][index],
+                        "number_of_members": data[10][index],
+                        "number_of_children": data[11][index],
+                        "material_used": data[12][index],
+                        "builder_name": data[13][index],
+                        "project_id": data[14][index]
 					});
 				});
 
 				uiDataHList = new UI_DataHList(jsonArraySearch(dataSet, "", {
 					"key-value-in-range": {
 						"key": "submission-date",
-						"range-start": new Date(new Date() - 864000000).toJSON().split("T")[0],
+						"range-start": new Date(new Date() - 31536000000).toJSON().split("T")[0],
 						"range-end": new Date().toJSON().split("T")[0]
 					}
 				}), config.dataGroups, config.api);
@@ -282,14 +396,14 @@ $(document).ready(function() {
 		});
 
 		uiQueryField = new UI_DateRangeAndString({
-			"default-start-date": new Date(new Date() - 864000000).toJSON().split("T")[0],
+			"default-start-date": new Date(new Date() - 31536000000).toJSON().split("T")[0],
 			"default-end-date": (new Date()).toJSON().split("T")[0],
 			"event-handlers": {
 				"on-query": function(e) {
 
 					//console.log(new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]));
 
-					if (new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > 864000000) {
+					if (new Date(this.getQueryObject()["end-date"]) - new Date(this.getQueryObject()["start-date"]) > 31536000000) {
 						$(".ui-large-button.with-pictures").addClass("passive");
 						$(".ui-large-button.with-pictures").parent().addClass("passive");
 					} else {
@@ -314,6 +428,7 @@ $(document).ready(function() {
 		var updateMsgBox = $("<div class='update-msg'></div>").appendTo("#app");
 		$.ajax({
 			url: config.api + "download.php?query=gettimestamp"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+            crossDomain: true,
 			success: function(data) {
 				data = Number(data);
 				updatetime = "Last update: " + Math.floor(data / 3600) + "h" + Math.floor((data / 3600 - Math.floor(data / 3600)) * 60) + "m ago.";
@@ -340,6 +455,7 @@ $(document).ready(function() {
 				var context = this;
 				$.ajax({
 					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                    crossDomain: true,
 					success: function(filename) {
 						$(context).parent().find("a.ui-hlist").remove();
 						if (filename === "") {
@@ -353,6 +469,7 @@ $(document).ready(function() {
 
 						$.ajax({
 							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                            crossDomain: true,
 							success: function(filename) {
 								//$(context).parent().find("a.ui-hlist").remove();
 								if (filename === "") {
@@ -366,6 +483,7 @@ $(document).ready(function() {
 
 								$.ajax({
 									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&string=" + uiQueryField.getQueryObject()["string"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                                    crossDomain: true,
 									success: function(filename) {
 										//$(context).parent().find("a.ui-hlist").remove();
 										if (filename === "") {
@@ -394,6 +512,7 @@ $(document).ready(function() {
 				var context = this;
 				$.ajax({
 					url: config.api + "script.php?tablename=school&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                    crossDomain: true,
 					success: function(filename) {
 						$(context).parent().find("a.ui-hlist").remove();
 						if (filename === "") {
@@ -407,6 +526,7 @@ $(document).ready(function() {
 
 						$.ajax({
 							url: config.api + "script.php?tablename=building&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
+                            crossDomain: true,
 							success: function(filename) {
 								//$(context).parent().find("a.ui-hlist").remove();
 								if (filename === "") {
@@ -420,7 +540,8 @@ $(document).ready(function() {
 
 								$.ajax({
 									url: config.api + "script.php?tablename=buildingelement&startdate=" + uiQueryField.getQueryObject()["start-date"] + "&enddate=" + uiQueryField.getQueryObject()["end-date"] + "&query=csvonly"+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
-									success: function(filename) {
+									crossDomain: true,
+                                    success: function(filename) {
 										//$(context).parent().find("a.ui-hlist").remove();
 										if (filename === "") {
 											$(context).parent().append($("<a class='ui-hlist-item error'/>").text("Date range too large. Please try a smaller range of dates."));
