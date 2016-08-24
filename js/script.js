@@ -1,8 +1,8 @@
 config = {
-    api: "http://127.0.0.1:9000/",
-	authUrl: "http://127.0.0.1:9000/auth.php",
+    api: "http://139.59.28.75/ona_export_tool_ncell_tunnel_house/",
+	authUrl: "http://139.59.28.75/ona_export_tool_ncell_tunnel_house/auth.php",
 	dataGroups: ["tunnel_house"],
-	surveyStartDate: "0001-01-01"
+	surveyStartDate: "2015-10-23"
 };
 
 sessionGlobals={};
@@ -344,7 +344,9 @@ $(document).ready(function() {
 			url: config.api + "download.php"+"?key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
             crossDomain: true,
 			success: function(data) {
+
 				data = data.split("|");
+				//console.log(config.api + "download.php"+"?key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""));
 				data[0] = data[0].split(";");
 				data[1] = data[1].split(";");
 				data[2] = data[2].split(";");
