@@ -32,7 +32,7 @@ function UI_DataHList(data, dataGroups, api) {
 
 			});*/
 
-			var datapointRow = $('<span class="datapoint"></span>')/*.append($("<a class='pdf-export'>PDF</a>").attr({
+			 var datapointRow = $('<span class="datapoint"></span>')/*.append($("<a class='pdf-export'>PDF</a>").attr({
 				href: api + "download.php?emis=" + item["emis"]+"&key="+sessionGlobals["key"]+(sessionGlobals["surveyor_id"]?("&surveyor_id="+sessionGlobals["surveyor_id"]):""),
 				target: "_blank"
 			})))*/.append($("<a class='webpage-view'>HTML</a>").attr({
@@ -44,7 +44,7 @@ function UI_DataHList(data, dataGroups, api) {
 				"class": "project_id num"
 			}).text(item["project_id"]));
 			datapointRow.append($('<span></span>').attr({
-				"class": "date"
+				"class": "date num" 
 			}).text(item["submission-date"]));
 			datapointRow.append($('<span></span>').attr({
 				"class": "district"
@@ -124,14 +124,14 @@ function UI_DataHList(data, dataGroups, api) {
 
         var datapointRow = $('<span class="datapoint headers"></span>');
         datapointRow.append($('<span></span>').attr({
-            "class": "project_id num"
-        }).text("Proj. ID"));
+            "class": "project_id"
+        }).text("Project ID"));
         datapointRow.append($('<span></span>').attr({
             "class": "date"
-        }).text("Sub. Date"));
+        }).text("Submission Date"));
         datapointRow.append($('<span></span>').attr({
             "class": "district"
-        }).text("Dist."));
+        }).text("District"));
         datapointRow.append($('<span></span>').attr({
             "class": "vdc"
         }).text("VDC"));
